@@ -1,0 +1,95 @@
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form [formGroup]="formRegister" action="#">
+			<h1>Create Account</h1>
+			<div class="social-container">
+				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+			</div>
+
+			<div class="form__group field">
+				<input formControlName="name" type="input" class="form__field" placeholder="Name" name="name" id='name' required />
+				<label for="name" class="form__label">Username<span *ngIf="this.formRegister.controls['name'].errors" class="required-asterisk"> *</span></label>
+			  </div>
+			<div *ngIf="this.formRegister.controls['name'].errors">
+				<div *ngIf="this.formRegister.controls['name'].errors?.['required'] && this.formRegister.controls['name'].touched && !isSuccess" class="validator">Name is required.</div>
+				<div *ngIf="this.formRegister.controls['name'].errors?.['minlength'] && this.formRegister.controls['name'].touched && !isSuccess" class="validator">Name must have at least 6 characters.</div>
+			</div>
+			<div class="form__group field">
+				<input formControlName="email" type="input" class="form__field" placeholder="Email" name="email" id='email' required />
+				<label   for="email" class="form__label">Email<span *ngIf="this.formRegister.controls['email'].errors" class="required-asterisk"> *</span></label>
+			  </div>
+			<div *ngIf="this.formRegister.controls['email'].errors">
+				<div *ngIf="this.formRegister.controls['email'].errors?.['required'] && this.formRegister.controls['email'].touched && !isSuccess" class="validator">Email is required.</div>
+				<div *ngIf="this.formRegister.controls['email'].errors?.['email'] && this.formRegister.controls['email'].touched && !isSuccess" class="validator">Incorrect format for the email.</div>
+        <div *ngIf="this.formRegister.controls['email'].errors?.['pattern'] && this.formRegister.controls['email'].touched && !isSuccess" class="validator">Incorrect format for the email.</div>
+			</div>
+			<div class="form__group field">
+				<input formControlName="password" type="input" class="form__field" type="password" placeholder="Password" name="password" id='password' required />
+				<label for="password" class="form__label">Password<span *ngIf="this.formRegister.controls['password'].errors" class="required-asterisk"> *</span></label>
+			</div>
+			<div *ngIf="this.formRegister.controls['password'].errors">
+				<div *ngIf="this.formRegister.controls['password'].errors?.['required'] && this.formRegister.controls['password'].touched && !isSuccess" class="validator">Password is required</div>
+				<!-- <div *ngIf="this.formRegister.controls.password.errors.minlength && this.formRegister.controls.password.touched && !isSuccess" class="validator">Password must have at least 8 characters.</div> -->
+				<!-- <div *ngIf="this.formRegister.controls.password.errors.pattern && this.formRegister.controls.password.touched && !isSuccess" class="validator">Password must have at least one lowercase, one uppercase and one number.</div> -->
+			</div>
+			<div class="form__group field">
+				<input formControlName="confirmPassword" type="input" class="form__field" placeholder="Confirm Passwords" name="confirmPassword" id='confirmPassword' type="password" required />
+				<label for="confirmPassword" class="form__label">Confirm Password<span *ngIf="this.formRegister.controls['confirmPassword'].errors" class="required-asterisk"> *</span></label>
+			  </div>
+			<div *ngIf="this.formRegister.controls['confirmPassword'].errors">
+				<div *ngIf="this.formRegister.controls['confirmPassword'].errors?.['required'] && this.formRegister.controls['confirmPassword'].touched && !isSuccess" class="validator">Password confirmation is required.</div>
+				<div *ngIf="this.formRegister.controls['confirmPassword'].errors?.['mustMatch'] && this.formRegister.controls['confirmPassword'].touched && !isSuccess" class="validator">Passwords must match.</div>
+			</div>
+      <div *ngIf="isSuccess" class="success">The register was successful!</div>
+			<button type="button" (click)="saveRegisterData()">Sign Up</button>
+
+		</form>
+	</div>
+	<div class="form-container sign-in-container">
+		<form [formGroup]="formLogin" action="#">
+			<h1>Sign in</h1>
+			<div class="social-container">
+				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+			</div>
+      <div class="form__group field">
+        <input formControlName="email" type="input" class="form__field" placeholder="Email" name="email" id='emaillogin' required />
+        <label   for="email" class="form__label">Email</label>
+      </div>
+      <div *ngIf="this.formLogin.controls['email'].errors && this.formLogin.controls['email'].touched">
+        <div *ngIf="this.formLogin.controls['email'].errors?.['required'] && this.formLogin.controls['email'].touched" class="validator">Email is required.</div>
+        <div *ngIf="this.formLogin.controls['email'].errors?.['pattern'] && this.formLogin.controls['email'].touched" class="validator">Incorrect format for the email.</div>
+      </div>
+      <div class="form__group field">
+        <input formControlName="password" type="input" class="form__field" type="password" placeholder="Password" name="password" id='passwordlogin' required />
+        <label for="password" class="form__label">Password</label>
+      </div>
+      <div *ngIf="this.formLogin.controls['password'].errors">
+        <div *ngIf="this.formLogin.controls['password'].errors?.['required'] && this.formLogin.controls['password'].touched" class="validator">Password is required</div>
+        <div *ngIf="this.formLogin.controls['password'].errors?.['minlength'] && this.formLogin.controls['password'].touched" class="validator">Password must have at least 8 characters.</div>
+        <div *ngIf="this.formLogin.controls['password'].errors?.['pattern'] && this.formLogin.controls['password'].touched" class="validator">Password must have at least one lowercase, one uppercase and one number.</div>
+      </div>
+
+			<!-- <app-forgot-password-modal></app-forgot-password-modal> -->
+			<button type="button" (click)="saveLoginData()">Sign In</button>
+
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-left">
+				<h1>Welcome Back!</h1>
+				<p>To keep connected with us please login with your personal info</p>
+				<button class="ghost" id="signIn" type="button" (click)="loginActivate()">Sign In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>Hello, Friend!</h1>
+				<p>Enter your personal details and start journey with us</p>
+				<button class="ghost" id="signUp" type="button" (click)="registerAcitvate()">Sign Up</button>
+			</div>
+		</div>
+	</div>
+</div>

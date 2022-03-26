@@ -1,0 +1,21 @@
+.card-text{
+    color: white;
+}
+
+.btn-primary2 {
+    background-color: rgba(139, 0, 0, 0.8);
+    border: 0;
+    border-radius: 15px;
+    height: auto;
+    color: #cfcfcf;
+  }
+
+.card{
+    display: flex;
+    align-items: center;
+    background-color: rgba(15, 29, 32, 0.77);
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    transition: all 0.3s;
+}

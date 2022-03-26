@@ -1,0 +1,20 @@
+.resize {
+  display: flex;
+  float: right;
+  justify-self: center;
+  align-items: center;
+  width: 50px;
+  height: auto;
+  line-height:28px;
+  vertical-align:middle;
+  border-radius: 50%;
+}
+
+.input-group{
+  justify-content: space-between;
+}
+
+.row{
+  margin-left: 20px;
+  margin-right: 20px;
+}
