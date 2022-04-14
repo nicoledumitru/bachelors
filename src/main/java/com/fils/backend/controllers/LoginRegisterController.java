@@ -6,6 +6,7 @@ import com.fils.backend.security.AuthRequest;
 import com.fils.backend.security.JwtResponse;
 import com.fils.backend.security.JwtUtil;
 import com.fils.backend.security.MyUserDetailsService;
+import com.fils.backend.services.EmailTokenService;
 import com.fils.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +36,9 @@ public class LoginRegisterController {
 
     @Autowired
     private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private EmailTokenService emailVerificationTokenService;
 
 //    @Autowired
 //    private RefreshTokenService refreshTokenService;
@@ -94,20 +95,31 @@ public class LoginRegisterController {
             user.setRoles("ROLE_GUEST");
             user.setActive(false);
             userService.saveUser(user);
-            return ResponseEntity.ok("");
+//            return ResponseEntity.ok("");
+
+            try {
+                String emailTokenString = emailVerificationTokenService.createEmailTokenForUserInDB(user);
+                emailVerificationTokenService.sendVerificationEmail(user, emailTokenString);
+                return ResponseEntity.ok("");
+            } catch (Exception e) {
+                e.printStackTrace();
+                userService.deleteUser(user);
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("ERROR: EmailService failed. User couldn't be created !!");
+            }
+
         } else {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("ERROR : USERNAME ALREADY EXISTS !!");
         }
     }
 
-//    @GetMapping("/verify")
-//    public ResponseEntity verifyUser(@RequestParam String code) {
-//        if (emailVerificationTokenService.verify(code)) {
-//            return ResponseEntity.ok("Email Verification Successful");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR : Email Verification failed ");
-//        }
-//    }
+    @GetMapping("/verify")
+    public ResponseEntity verifyUser(@RequestParam String code) {
+        if (emailVerificationTokenService.verify(code)) {
+            return ResponseEntity.ok("Email Verification Successful");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR : Email Verification failed ");
+        }
+    }
 
 //    @GetMapping("/forgot")
 //    public ResponseEntity forgotPassword(@RequestBody PasswordResetDto passwordResetDto) {

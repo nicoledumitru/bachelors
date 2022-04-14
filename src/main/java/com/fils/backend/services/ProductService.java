@@ -18,4 +18,6 @@ public class ProductService {
     public void deleteProduct(Product product){
         productRepository.delete(product);
     }
+    public List<Product> getProductsByName(String name){ return productRepository.findByNameContaining(name);}
+    public void saveProduct(Product product){productRepository.save(product);}
 }

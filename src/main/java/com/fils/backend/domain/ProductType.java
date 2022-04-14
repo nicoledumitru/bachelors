@@ -1,3 +1,4 @@
 package com.fils.backend.domain;
 
-public enum ProductType {MERCH, GAME}
+public enum ProductType {CLOTHES, FOOD, DRINKS, SHIRT, TSHIRT, PANTS, JEANS, CHAMPAGNE, WINE, BEER, JUICE, WATER, CHEESE, MILK,
+    PORK_MEAT, BEEF_MEAT, CHICKEN_MEAT, FISH, TURKEY_MEAT, SNACK, SWEETS}

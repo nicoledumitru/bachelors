@@ -6,6 +6,7 @@ import com.fils.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class UserController {
 //    UserProfileRepository userProfileRepository;
 
     @GetMapping("admin/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
     }
@@ -86,14 +88,14 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("admin/deletebyemail")
-    public ResponseEntity deleteUser(@RequestParam String email) {
-        Optional<User> tempUser = userService.getUserByEmail(email);
+    @DeleteMapping("admin/deletebyusername")
+    public ResponseEntity deleteUser(@RequestParam String username) {
+        Optional<User> tempUser = userService.getUserByUsername(username);
         if (tempUser.isPresent()) {
             userService.deleteUser(tempUser.get());
             return ResponseEntity.ok("DELETED: " + tempUser);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: User with email: " + email + " was NOT FOUND !");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: User with email: " + username + " was NOT FOUND !");
         }
     }
 

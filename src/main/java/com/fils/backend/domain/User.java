@@ -26,8 +26,8 @@ public class User {
     private String password;
     private boolean isActive;
 
-    @Column(name = "verification_code", length = 64)
-    private String verificationCode;
+//    @Column(name = "verification_code", length = 64)
+//    private String verificationCode;
 
     String roles;
 
