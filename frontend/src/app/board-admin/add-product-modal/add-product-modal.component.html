@@ -1,0 +1,24 @@
+<div class="overlay-modal"  tabindex="-1">
+    <form [formGroup]="productForm">
+        <div class="div-modal-title">
+            <h3 class="modal-title"> Add a product</h3>
+        </div>
+        <div class="div-input">
+            <input formControlName="name" class="input">
+        </div>
+        <div class="div-textarea">
+            <textarea formControlName="description" class="textarea"></textarea>
+        </div>
+        <div>
+            <input type="number" formControlName="price" id="price" name="price" min="1" step="0.1">
+        </div>
+        <!-- <div class="div-button-add-media">
+            <button class="upload-button" > <i class="fa fa-upload">  </i> </button>
+        </div> -->
+    
+        <div class="div-bottom-buttons">
+            <button (click)="closeModal()" class="cancel-button"> Cancel </button>
+            <button (click)="saveData()" class="save-button"> Save </button>
+        </div>
+    </form>
+</div>

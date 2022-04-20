@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -8,13 +13,15 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { MainContainerComponent } from './main-container/main-container.component';
 import { ProductListComponent } from './home/product-list/product-list.component';
 import { ProductItemComponent } from './home/product-list/product-item/product-item.component';
+import { BoardAdminComponent } from './board-admin/board-admin.component';
+import { BoardUserComponent } from './board-user/board-user.component';
+import { AddProductModalComponent } from './board-admin/add-product-modal/add-product-modal.component';
+import { authInterceptorProviders } from './_helpers/auth.interceptor';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +34,11 @@ import { ProductItemComponent } from './home/product-list/product-item/product-i
     HeaderComponent,
     MainContainerComponent,
     ProductListComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    BoardAdminComponent,
+    BoardUserComponent,
+    AddProductModalComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -36,9 +47,11 @@ import { ProductItemComponent } from './home/product-list/product-item/product-i
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule,
+    NoopAnimationsModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

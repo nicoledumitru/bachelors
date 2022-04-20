@@ -9,12 +9,12 @@
 			</div>
 
 			<div class="form__group field">
-				<input formControlName="name" type="input" class="form__field" placeholder="Name" name="name" id='name' required />
-				<label for="name" class="form__label">Username<span *ngIf="this.formRegister.controls['name'].errors" class="required-asterisk"> *</span></label>
-			  </div>
-			<div *ngIf="this.formRegister.controls['name'].errors">
-				<div *ngIf="this.formRegister.controls['name'].errors?.['required'] && this.formRegister.controls['name'].touched && !isSuccess" class="validator">Name is required.</div>
-				<div *ngIf="this.formRegister.controls['name'].errors?.['minlength'] && this.formRegister.controls['name'].touched && !isSuccess" class="validator">Name must have at least 6 characters.</div>
+				<input formControlName="username" type="input" class="form__field" placeholder="Username" name="username" id='username' required />
+				<label for="username" class="form__label">Username<span *ngIf="this.formRegister.controls['username'].errors" class="required-asterisk"> *</span></label>
+			</div>
+			<div *ngIf="this.formRegister.controls['username'].errors">
+				<div *ngIf="this.formRegister.controls['username'].errors?.['required'] && this.formRegister.controls['username'].touched && !isSuccess" class="validator">Username is required.</div>
+				<!-- <div *ngIf="this.formRegister.controls['name'].errors?.['minlength'] && this.formRegister.controls['name'].touched && !isSuccess" class="validator">Name must have at least 6 characters.</div> -->
 			</div>
 			<div class="form__group field">
 				<input formControlName="email" type="input" class="form__field" placeholder="Email" name="email" id='email' required />
@@ -48,21 +48,28 @@
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
-		<form [formGroup]="formLogin" action="#">
-			<h1>Sign in</h1>
+		<form [formGroup]="formLogin" action="#"
+        *ngIf="!isLoggedIn"
+        name="form"
+        (ngSubmit)="f.form.valid && saveLoginData()"
+        #f="ngForm"
+        novalidate
+      	>
+		<!-- <form > -->
+			<h1>Log in</h1>
 			<div class="social-container">
 				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
 				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div>
-      <div class="form__group field">
-        <input formControlName="email" type="input" class="form__field" placeholder="Email" name="email" id='emaillogin' required />
-        <label   for="email" class="form__label">Email</label>
-      </div>
-      <div *ngIf="this.formLogin.controls['email'].errors && this.formLogin.controls['email'].touched">
-        <div *ngIf="this.formLogin.controls['email'].errors?.['required'] && this.formLogin.controls['email'].touched" class="validator">Email is required.</div>
-        <div *ngIf="this.formLogin.controls['email'].errors?.['pattern'] && this.formLogin.controls['email'].touched" class="validator">Incorrect format for the email.</div>
-      </div>
+		<div class="form__group field">
+			<input formControlName="username" type="input" class="form__field" placeholder="Username" name="username" id='username' required />
+			<label for="username" class="form__label">Username<span *ngIf="this.formRegister.controls['username'].errors" class="required-asterisk"> *</span></label>
+		</div>
+		<div *ngIf="this.formRegister.controls['username'].errors">
+			<div *ngIf="this.formRegister.controls['username'].errors?.['required'] && this.formRegister.controls['username'].touched && !isSuccess" class="validator">Username is required.</div>
+			<!-- <div *ngIf="this.formRegister.controls['name'].errors?.['minlength'] && this.formRegister.controls['name'].touched && !isSuccess" class="validator">Name must have at least 6 characters.</div> -->
+		</div>
       <div class="form__group field">
         <input formControlName="password" type="input" class="form__field" type="password" placeholder="Password" name="password" id='passwordlogin' required />
         <label for="password" class="form__label">Password</label>
@@ -74,7 +81,7 @@
       </div>
 
 			<!-- <app-forgot-password-modal></app-forgot-password-modal> -->
-			<button type="button" (click)="saveLoginData()">Sign In</button>
+			<button type="button" (click)="saveLoginData()">Log In</button>
 
 		</form>
 	</div>

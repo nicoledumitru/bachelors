@@ -1,0 +1,96 @@
+.overlay-modal{
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 500px;
+    height: 500px;
+    margin: 2%;
+}
+
+.div-modal-title{
+    padding-bottom: 5%;
+}
+
+.modal-title{
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: bolder;
+}
+
+.div-input{
+    padding-bottom: 2%;
+    width: 450px;
+    height: 50px;
+}
+
+.input{
+    width: 450px;
+    height: 30px;
+}
+
+.div-dropdown{
+    padding-bottom: 10%;
+}
+
+.textarea{
+    width: 450px;
+    height: 250px;
+}
+.div-textarea{
+    width: 450px;
+    padding-bottom: 2%;
+}
+
+.div-button-add-media{
+    padding-bottom: 4%;
+}
+
+.div-bottom-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.file-input {
+    display: none;
+  }
+.cancel-button{
+    border-radius: 5%;
+    width: 150px;
+    height: 50px;
+    background-color: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.30);
+    font-family: 'Montserrat', sans-serif;
+    color: #FF4B2B;
+}
+
+.upload-button{
+    border-radius: 5%;
+    width: 75px;
+    height: 35px;
+    background-color: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.30);
+    font-family: 'Montserrat', sans-serif;
+    color: #FF4B2B;
+}
+
+.save-button{
+    border-radius: 5%;
+    width: 150px;
+    height: 50px;
+    background-color: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.30);
+    font-family: 'Montserrat', sans-serif;
+    color: #FF4B2B;
+}
+
+.cancel-button:hover{
+    background-color: #FF4B2B;
+    color: white;
+}
+
+.save-button:hover{
+    background-color: green;
+    color: white;
+}

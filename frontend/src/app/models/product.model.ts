@@ -3,6 +3,7 @@ export class Product {
     name?: string;
     description?: string;
     price?: number;
-    // imageUrl: string;
+    imageUrl?: string;
     published?: boolean;
+    userName?: string;
 }

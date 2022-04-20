@@ -14,9 +14,12 @@ import { TokenStorageServiceService } from '../services/token-storage-service.se
 export class LoginRegisterComponent implements OnInit {
 
   loginData: LoginData = {} as LoginData;
+  registerData: RegisterModel = {} as RegisterModel;
   formLogin: FormGroup = {} as FormGroup;
   formRegister: FormGroup = {} as FormGroup;
   isSuccess: boolean = false;
+  roles: string[] = [];
+  isLoggedIn = false;
 
   @Output() getLoginData = new EventEmitter<string>();
 
@@ -33,18 +36,21 @@ export class LoginRegisterComponent implements OnInit {
   ngOnInit(): void {
 
     this.formLogin = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.pattern("^([a-zA-Z0-9+-_.])+@([a-zA-Z0-9-.]+)\\.[a-z.]{2,24}$")]],
+      username: ['', [Validators.required, Validators.minLength(6)]],
       password: ['', [Validators.required]],
     });
 
     this.formRegister = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(6)]],
+      username: ['', [Validators.required]],
       email: ['', [Validators.required,  Validators.pattern("^([a-zA-Z0-9+-_.])+@([a-zA-Z0-9-.]+)\\.[a-z.]{2,24}$")]],
       password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]]
-    }, {
-      validator: MustMatch('password', 'confirmPassword')
-    });
+    }
+    //, {
+    //  validator: MustMatch('password','confirmPassword')
+    
+  //}
+  );
   }
 
   registerAcitvate() {
@@ -66,10 +72,10 @@ export class LoginRegisterComponent implements OnInit {
   }
 
   saveLoginData() {
-    this.loginData.email = this.formLogin.controls['email'].value;
+    this.loginData.username = this.formLogin.controls['username'].value;
     this.loginData.password = this.formLogin.controls['password'].value;
     console.log(JSON.stringify(this.loginData))
-    this.formLogin.controls['email'].setValue('');
+    this.formLogin.controls['username'].setValue('');
     this.formLogin.controls['password'].setValue('');
     let auxAnswearLogin = this.loginDataService.authentificate(this.loginData);
     let auxToken;
@@ -85,31 +91,63 @@ export class LoginRegisterComponent implements OnInit {
 
   saveRegisterData() {
     if (this.formRegister.valid) {
-      let addedUser: RegisterModel = {} as RegisterModel;
-      addedUser.displayName = this.formRegister.controls['name'].value;
-      addedUser.email = this.formRegister.controls['email'].value;
-      addedUser.password = this.formRegister.controls['password'].value;
+      // let addedUser: RegisterModel = {} as RegisterModel;
+      // // this.registerData
+      this.registerData.username = this.formRegister.controls['username'].value;
+      this.registerData.email = this.formRegister.controls['email'].value;
+      this.registerData.password = this.formRegister.controls['password'].value;
       let auxPassword = this.formRegister.controls['confirmPassword'].value;
-      if (auxPassword == addedUser.password) {
-        console.log(JSON.stringify(addedUser));
-        this.formRegister.controls['name'].setValue('');
+      if (auxPassword == this.registerData.password) {
+        console.log(JSON.stringify(this.registerData));
+        this.formRegister.controls['username'].setValue('');
         this.formRegister.controls['email'].setValue('');
         this.formRegister.controls['password'].setValue('');
         this.formRegister.controls['confirmPassword'].setValue('')
-        this.loginDataService.register(addedUser);
+        this.loginDataService.register(this.registerData);
         this.isSuccess=true;
       } else {
         console.log("The form is not valid")
       }
+      // let addedUser: RegisterModel = {} as RegisterModel;
+      // addedUser.username = this.formRegister.controls['username'].value;
+      // addedUser.email = this.formRegister.controls['email'].value;
+      // addedUser.password = this.formRegister.controls['password'].value;
+      // let auxPassword = this.formRegister.controls['confirmPassword'].value;
+      // if (auxPassword == addedUser.password) {
+      //   console.log(JSON.stringify(addedUser));
+      //   this.formRegister.controls['username'].setValue('');
+      //   this.formRegister.controls['email'].setValue('');
+      //   this.formRegister.controls['password'].setValue('');
+      //   this.formRegister.controls['confirmPassword'].setValue('')
+      //   this.loginDataService.register(this.registerData);
+      //   this.isSuccess=true;
+      // } else {
+      //   console.log("The form is not valid")
+      // }
     } else {
       console.log("The form is not valid")
       return;
     }
 
   }
-
-}
-function MustMatch(arg0: string, arg1: string) {
-  throw new Error('Function not implemented.');
+  
 }
 
+function MustMatch(controlName: string, matchingControlName: string) {
+  return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+
+      if (matchingControl.errors && !matchingControl.errors['mustMatch']) {
+          // return if another validator has already found an error on the matchingControl
+          return;
+      }
+
+      // set error on matchingControl if validation fails
+      if (control.value !== matchingControl.value) {
+          matchingControl.setErrors({ mustMatch: true });
+      } else {
+          matchingControl.setErrors(null);
+      }
+  }
+}
