@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { TokenStorageServiceService } from './services/token-storage-service.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class AppComponent {
   // showModeratorBoard = false;
   username?: string;
 
-  constructor(private tokenStorageService: TokenStorageServiceService) { }
+  constructor(private tokenStorageService: TokenStorageServiceService, private router: Router) { }
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -28,6 +29,11 @@ export class AppComponent {
 
       this.username = user.username;
     }
+
+    if(this.showAdminBoard==true){
+      this.router.navigateByUrl('/admin');
+    }
+    else{ this.router.navigateByUrl(''); }
   }
 
   logout(): void {

@@ -1,0 +1,16 @@
+<div *ngIf="isLoggedIn; else loggedOut">
+    <div *ngIf="cartItems.length === 0" class="alert alert-info">You cart is empty</div>
+</div>
+<ul *ngIf="cartItems.length > 0" class="list-group">
+    <li class="list-group-item" *ngFor="let item of cartItems">
+        <app-cart-item [cartItem]="item"></app-cart-item>
+    </li>
+
+    <li class="list-group-item active">
+        <strong>Total</strong> {{ cartTotal | currency:'EUR'}}
+    </li>
+</ul>
+
+<ng-template #loggedOut>
+    Please login.
+</ng-template>

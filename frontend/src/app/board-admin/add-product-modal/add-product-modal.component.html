@@ -10,11 +10,33 @@
             <textarea formControlName="description" class="textarea"></textarea>
         </div>
         <div>
+            Price: 
             <input type="number" formControlName="price" id="price" name="price" min="1" step="0.1">
         </div>
-        <!-- <div class="div-button-add-media">
-            <button class="upload-button" > <i class="fa fa-upload">  </i> </button>
-        </div> -->
+        <!-- Dropdown list -->
+        <div>
+            <select
+          class="custom-select mb-3"
+          (change)="changeType($event)"
+          formControlName="type"
+            >
+          <option value="">Choose Type</option>
+          <option *ngFor="let product of products" [ngValue]="product.type">
+            {{ product.type }}
+          </option>
+            </select>
+        </div>
+
+        <div>
+            Stock: 
+            <input type="number" formControlName="stock" id="stock" name="stock" min="1">
+        </div>
+        <div class="div-button-add-media">
+            <input type="file"  >
+            <!-- (change)="onFileChanged($event)" -->
+            <!-- <img [src]="imgURL" height="200" *ngIf="imgURL"> -->
+            <button class="upload-button" (click)="onUpload()" > <i class="fa fa-upload">  </i> </button>
+        </div>
     
         <div class="div-bottom-buttons">
             <button (click)="closeModal()" class="cancel-button"> Cancel </button>

@@ -2,57 +2,53 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { TokenStorageServiceService } from './token-storage-service.service';
-import { map } from 'rxjs/operators';
-import { CartItem } from '../models/cart-item';
 import { Product } from '../models/product.model';
+import axios from 'axios';
+
+const getCartUrl = "http://localhost:8080/cart";
+const postToCartUrl = "http://localhost:8080/cart/add";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  private getCartUrl: string;
-  private postToCartUrl: string;
-  private headers: HttpHeaders;
-  private params = {} as HttpParams;
-
   constructor(private http: HttpClient,
-    private tokenService: TokenStorageServiceService) { 
-    this.getCartUrl = "http://localhost:8080/cart"
-    this.postToCartUrl = "http://localhost:8080/cart/add"
+    private tokenService: TokenStorageServiceService) { }
 
-    this.headers = new HttpHeaders();
-    this.params = new HttpParams();
+  getCartItems(): Observable<any> {
+    return this.http.get(getCartUrl
+      // {headers: {
+      // 'Content-Type': 'application/json',
+      // 'Authorization': 'Bearer '+this.tokenService.getToken()!
+      // // 'Access-Control-Allow-Origin': '*'
+      // }}
+      );
   }
 
-  getCartItems(): Observable<CartItem[]> {
-    return this.http.get<CartItem[]>(this.getCartUrl).pipe(
-      map((result: any[]) => {
-        let cartItems: CartItem[] = [];
+  addProductToCart(product: Product) {
+    // var produsVenit = this.http.post(postToCartUrl, product);
+    // return produsVenit;
+    // product["pid"] =product.id;
+    let data= {
+      "pid":product.id
+    }
 
-        for(let item of result) {
-          let productExists = false
-
-          for (let i in cartItems) {
-            if (cartItems[i].productId === item.product.id) {
-            cartItems[i].qty++
-              productExists = true
-              break;
-            }
-          }
-          if (!productExists) {
-            cartItems.push(new CartItem(item.id, item.product));
-          }
-        }
-        return cartItems;
-      })
-    );
+    //DE CE NU MERGE AICI FARA HEADER???
+    let config ={ headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+this.tokenService.getToken()!
+      // 'Access-Control-Allow-Origin': '*'
+      }
+    }
+    axios.post(postToCartUrl, data, config)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  
   }
-
-  addProductToCart(product: Product): Observable<any>{
-    this.params.set('pid', product.id!);
-    // this.params.set('qty', number);
-    return this.http.post<any>(this.postToCartUrl,{'headers': this.headers});
-    // return this.http.post(this.postToCartUrl, { product });
-  }
+  
 }

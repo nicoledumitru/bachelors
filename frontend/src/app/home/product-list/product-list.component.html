@@ -1,6 +1,7 @@
 <div class=row>
     <div class="col-md-4" *ngFor="let product of productList">
-        <app-product-item [productItem]="product">
+        <app-product-item [productItem]="product" [addedToWishlist]="wishlistItems.indexOf(product)>=0"
+            routerLink="products">
 
         </app-product-item>
     </div>

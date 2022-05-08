@@ -22,6 +22,10 @@ import { BoardUserComponent } from './board-user/board-user.component';
 import { AddProductModalComponent } from './board-admin/add-product-modal/add-product-modal.component';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { ProfileComponent } from './profile/profile.component';
+import { CartComponent } from './cart/cart.component';
+import { CartItemComponent } from './cart/cart-item/cart-item.component';
+import { WishlistComponent } from './wishlist/wishlist.component';
+import { IndividualProductComponent } from './individual-product/individual-product.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,11 @@ import { ProfileComponent } from './profile/profile.component';
     BoardAdminComponent,
     BoardUserComponent,
     AddProductModalComponent,
-    ProfileComponent
+    ProfileComponent,
+    CartComponent,
+    CartItemComponent,
+    WishlistComponent,
+    IndividualProductComponent
   ],
   imports: [
     BrowserModule,

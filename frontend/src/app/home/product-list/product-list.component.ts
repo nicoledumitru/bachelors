@@ -10,6 +10,8 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductListComponent implements OnInit {
 
   productList: Product[]=[]
+  wishlistItems: Product[] = [];
+  // product: Product;
 
   constructor(private productService: ProductService) { 
 

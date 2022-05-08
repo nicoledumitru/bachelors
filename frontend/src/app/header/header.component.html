@@ -1,40 +1,12 @@
-<!-- <ul>
-    <li>
-        <div class="header">
-            <img  src="" width="100px" alt="some logo"/>
-        </div>
-    </li>
-    <li>
-        <div>
-        <input
-            type="text"
-            class="form-control"
-            placeholder="Search by title"
-            [(ngModel)]="name"
-        />
 
-        <button
-            class="btn btn-outline-secondary"
-            type="button"
-            (click)="searchTitle()"
-        >Search
-        </button>
-        </div>
-    </li>
-
-    <li>
-        <img class="resize" src="https://i.pinimg.com/474x/36/e2/ce/36e2ceb66db11bf77d0b1a6300e3fba9.jpg">
-    </li>
-</ul> -->
 <div class="container">
 <div class="row col-wrap">
     <div class="col-md-12">
         <div class="input-group mb-3" style="margin-top: 15px;">
             <div class="col col-md-auto">
-                <img  src="" width="100px" alt="some logo"/>
+                <img  src="/assets/logo.PNG" width="100px" alt="some logo"/>
             </div>
 
-            <!-- <div class="input-group-append"></div> -->
             <div class="col col-md-6" style="display:flex">
                 <input
                 type="text"
@@ -52,8 +24,9 @@
             </div>
 
             <div class="col col-md-auto" style="align-self: center;">
-                <img routerLink="" class="resize" src="/assets/shopping-cart.png">
-                <img routerLink="" class="resize" src="/assets/heart.png">
+                <img routerLink="/cart" class="resize" src="/assets/shopping-cart.png">
+                <!-- <i class="far fa-heart" routerLink="/cart"></i> -->
+                <img routerLink="/wishlist" class="resize" src="/assets/heart.png">
                 <img (click)="choosePage()" class="resize" src="/assets/user.png">
             </div>
         </div>
