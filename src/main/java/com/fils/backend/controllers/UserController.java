@@ -25,9 +25,17 @@ public class UserController {
 //    UserProfileRepository userProfileRepository;
 
     @GetMapping("admin/all")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+//    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity getAll(@RequestHeader("Authorization") String auth) {
+        String jwtToken = auth.substring(7);
+        String username = jwtUtil.extractUsername(jwtToken);
+        Optional<User> userByUsername = userService.getUserByUsername(username);
+        if(userByUsername.isPresent() && userByUsername.get().getRoles().contains("ROLE_ADMIN")){
+//                userByUsername.get().setPassword(null);
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+        } else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("ADMIN account is required");
+        }
     }
 
 

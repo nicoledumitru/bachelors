@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.awt.*;
 
 @Table(name="products")
 @Entity
@@ -29,17 +30,29 @@ public class Product {
     @Column(name="price")
     private double price;
 
-    @Column(name="imageUrl")
-    private String imageURL;
+    @OneToOne
+    @JoinColumn(name="picture_id", referencedColumnName = "id")
+    private ImageModel picture;
+
+    @Column(name="stock")
+    private int stock;
+
+    private double totalRating;
+
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(nullable = false, name = "user_id")
+    private User user;
 
 //  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 //  @JoinColumn(name="id")
 //  private OrderLineItem orderLineItem;
 
-    public Product(String name, ProductType type, String description, double price) {
+    public Product(String name, String description, double price, ImageModel picture, ProductType type, int stock) {
         this.name = name;
         this.type = type;
         this.description = description;
         this.price = price;
+        this.stock = stock;
+        this.picture = picture;
     }
 }

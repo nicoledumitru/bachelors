@@ -1,6 +1,11 @@
 package com.fils.backend.controllers;
 
+import com.fils.backend.domain.CartItem;
+import com.fils.backend.domain.Product;
+import com.fils.backend.domain.Test;
 import com.fils.backend.domain.User;
+import com.fils.backend.repositories.CartItemRepository;
+import com.fils.backend.repositories.ProductRepository;
 import com.fils.backend.security.JwtUtil;
 import com.fils.backend.services.ShoppingCartServices;
 import com.fils.backend.services.UserService;
@@ -23,6 +28,12 @@ public class ShoppingCartController {
     private UserService userService;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @GetMapping("")
@@ -37,29 +48,40 @@ public class ShoppingCartController {
             } else{
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You should log in first");
             }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//        User u = userService.getCurrentUser(auth);
-//        return ResponseEntity.status(HttpStatus.OK).body(cartServices.listCartItems(u));
     }
 
     @PostMapping("/add")
-    public ResponseEntity addProductToCart(@RequestParam Long pid, @RequestParam Integer qty,
+    public ResponseEntity addProductToCart(@RequestBody Test pid,
                                    @RequestHeader("Authorization") String auth){
-
+//        , @RequestParam Integer qty
+        int addedQty;
+        int quantity= 1;
         try {
             String jwtToken = auth.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
             Optional<User> userByUsername = userService.getUserByUsername(username);
 
             if (userByUsername.isPresent()) {
-//                User u = userService.getCurrentUser(auth);
-//                userByUsername.get().setPassword(null);
-                int addedQty = cartServices.addProduct(pid, qty, userByUsername.get());
+//                int addedQty =
+//                cartServices.addProduct(pid, userByUsername.get());
+//                cartServices.addProduct(pid);
 
-                return ResponseEntity.status(HttpStatus.OK).body(addedQty+" item(s) were added to your cart");
+//                addedQty+
+
+                Product product = productRepository.findById(pid.pid).get();
+                CartItem cartItem = cartItemRepository.findByUserAndProduct(userByUsername.get(),product);
+                if(cartItem != null){
+                    addedQty = cartItem.getQuantity()+quantity;
+                    cartItem.setQuantity(addedQty);
+                } else{
+                    cartItem = new CartItem();
+                    cartItem.setQuantity(quantity);
+                    cartItem.setUser(userByUsername.get());
+                    cartItem.setProduct(product);
+                }
+
+                cartItemRepository.save(cartItem);
+                return ResponseEntity.status(HttpStatus.OK).body("Item added to your cart");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: MissMatch JWT TOKEN with User (NOT_FOUND)");
             }

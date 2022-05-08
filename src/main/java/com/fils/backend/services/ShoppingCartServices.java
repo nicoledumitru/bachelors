@@ -22,25 +22,27 @@ public class ShoppingCartServices {
         return cartItemRepository.findByUser(user);
     }
 
-    public int addProduct(Long productId, int quantity, User user){
-        int addedQty= quantity;
-        Product product = productRepository.findById(productId).get();
-        CartItem cartItem = cartItemRepository.findByUserAndProduct(user,product);
-
-        if(cartItem != null){
-            addedQty = cartItem.getQuantity()+quantity;
-            cartItem.setQuantity(addedQty);
-        } else{
-            cartItem = new CartItem();
-            cartItem.setQuantity(quantity);
-            cartItem.setUser(user);
-            cartItem.setProduct(product);
-        }
-
-        cartItemRepository.save(cartItem);
-
-        return addedQty;
-    }
+    public CartItem saveItem(CartItem cartItem){ return cartItemRepository.save(cartItem);}
+//    public int addProduct(Long productId){
+//        int addedQty= 0;
+//        int quantity= 1;
+//        Product product = productRepository.findById(productId).get();
+//        CartItem cartItem = cartItemRepository.findByUserAndProduct(user,product);
+//
+//        if(cartItem != null){
+//            addedQty = cartItem.getQuantity()+quantity;
+//            cartItem.setQuantity(addedQty);
+//        } else{
+//            cartItem = new CartItem();
+//            cartItem.setQuantity(quantity);
+////            cartItem.setUser(user);
+//            cartItem.setProduct(product);
+//        }
+//
+//        cartItemRepository.save(cartItem);
+//
+//        return addedQty;
+//    }
 
 //    public CartItem getItemByID(int id){
 //        return cartItemRepository.getById(id);
