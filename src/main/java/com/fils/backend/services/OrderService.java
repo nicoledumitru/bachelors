@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class OrderService {
@@ -17,4 +18,10 @@ public class OrderService {
     public void saveOrder(Order order){orderRepository.save(order);}
     public List<Order> getOrdersByUser(User user){return orderRepository.findAllByUser(user);}
 //    public Order getOrderByUserAndCartItemList(User user, List<CartItem> list){ return orderRepository.findOrderByUserAndCartItemList(user, list);}
+
+    public String generateOrderTrackingNumber() {
+
+        // generate a random UUID number (UUID version-4)
+        return UUID.randomUUID().toString();
+    }
 }

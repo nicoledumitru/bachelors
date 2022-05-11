@@ -22,7 +22,8 @@ public class Product {
     @NotNull(message = "Product name is required.")
     private String name;
 
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
     private ProductType type;
 
     private String description;
@@ -30,9 +31,12 @@ public class Product {
     @Column(name="price")
     private double price;
 
-    @OneToOne
-    @JoinColumn(name="picture_id", referencedColumnName = "id")
-    private ImageModel picture;
+//    @OneToOne
+//    @JoinColumn(name="picture_id", referencedColumnName = "id")
+//    private ImageModel picture;
+
+    @Column(name="image_url")
+    private String imageUrl;
 
     @Column(name="stock")
     private int stock;
@@ -47,12 +51,12 @@ public class Product {
 //  @JoinColumn(name="id")
 //  private OrderLineItem orderLineItem;
 
-    public Product(String name, String description, double price, ImageModel picture, ProductType type, int stock) {
-        this.name = name;
-        this.type = type;
-        this.description = description;
-        this.price = price;
-        this.stock = stock;
-        this.picture = picture;
-    }
+//    public Product(String name, String description, double price, String imageUrl, ProductType type, int stock) {
+//        this.name = name;
+//        this.type = type;
+//        this.description = description;
+//        this.price = price;
+//        this.stock = stock;
+//        this.imageUrl = imageUrl;
+//    }
 }

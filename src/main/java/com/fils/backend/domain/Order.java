@@ -28,4 +28,7 @@ public class Order {
 
     @Column(name = "price")
     private double totalPrice;
+
+    @Column(name="order_tracking_number")
+    private String orderTrackingNumber;
 }

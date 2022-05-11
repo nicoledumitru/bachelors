@@ -4,6 +4,7 @@ import com.fils.backend.domain.ImageModel;
 import com.fils.backend.domain.Product;
 import com.fils.backend.domain.ProductType;
 import com.fils.backend.domain.User;
+import com.fils.backend.repositories.ProductTypeRepository;
 import com.fils.backend.security.JwtUtil;
 import com.fils.backend.services.ImageModelService;
 import com.fils.backend.services.ProductService;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/products")
@@ -33,7 +35,7 @@ public class ProductController {
     UserService userService;
 
     @Autowired
-    ImageModelService imageModelService;
+    ProductTypeRepository categoryRepository;
 
     @Autowired
     ReviewService reviewService;
@@ -44,7 +46,7 @@ public class ProductController {
             String jwtToken = auth.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
             Optional<User> userByUsername = userService.getUserByUsername(username);
-
+            Set<Product> listOfExistedProducts = product.getType().getProducts();
 
             if(userByUsername.isPresent() && userByUsername.get().getRoles().contains("ROLE_ADMIN") && product!=null) {
                 Product p = new Product();
@@ -53,9 +55,11 @@ public class ProductController {
                 p.setDescription(product.getDescription());
                 p.setPrice(product.getPrice());
                 p.setStock(product.getStock());
-                p.setPicture(product.getPicture());
+                p.setImageUrl(product.getImageUrl());
                 p.setUser(userByUsername.get());
+
                 productService.saveProduct(p);
+//                listOfExistedProducts.add(p);
 //                productService.saveProduct(new Product(product.getName(), product.getType(), product.getDescription(), product.getPrice()));
                 return new ResponseEntity<>(HttpStatus.CREATED);
             } else{
@@ -109,27 +113,31 @@ public class ProductController {
     }
 
     @GetMapping("/sort")
-    public ResponseEntity<List<Product>> sortProductsByType(@RequestParam ProductType type){
-        List<Product> allProducts = productService.getProducts();
-        List<Product> sortedProducts = new ArrayList<>();
-        for (Product product: allProducts) {
-            if(product.getType().equals(type)){
-                sortedProducts.add(product);
-            }
-        }
+    public ResponseEntity<List<Product>> sortProductsByType(@RequestParam Long categoryId){
+//        List<Product> allProducts = productService.getProducts();
+//        List<Product> sortedProducts = new ArrayList<>();
+//        for (Product product: allProducts) {
+//            if(product.getType().equals(type)){
+//                sortedProducts.add(product);
+//            }
+//        }
+//        if(!sortedProducts.isEmpty()) {
+//            return new ResponseEntity<>(sortedProducts, HttpStatus.OK);
+//        } else return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        List<Product> sortedProducts = productService.getProductsByCategory(categoryId);
         if(!sortedProducts.isEmpty()) {
             return new ResponseEntity<>(sortedProducts, HttpStatus.OK);
         } else return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity uploadImage(@RequestParam("myFile") MultipartFile file) {
-        try{
-            imageModelService.uploadImage(file);
-            return ResponseEntity.status(HttpStatus.OK).body("Image uploaded");
-        } catch (Exception e) {
-            String message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
-        }
-    }
+//    @PostMapping("/upload")
+//    public ResponseEntity uploadImage(@RequestParam("myFile") MultipartFile file) {
+//        try{
+//            imageModelService.uploadImage(file);
+//            return ResponseEntity.status(HttpStatus.OK).body("Image uploaded");
+//        } catch (Exception e) {
+//            String message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+//            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+//        }
+//    }
 }

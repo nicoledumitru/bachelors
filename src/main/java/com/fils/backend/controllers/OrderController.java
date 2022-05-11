@@ -64,6 +64,7 @@ public class OrderController {
                 o.setUser(userByUsername.get());
                 o.setCartItemList(items);
                 o.setTotalPrice(Double.parseDouble(df.format(totalPrice)));
+                o.setOrderTrackingNumber(orderService.generateOrderTrackingNumber());
                 orderService.saveOrder(o);
                 return ResponseEntity.status(HttpStatus.OK).body("The order is placed, thank you");
             } else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: MissMatch JWT TOKEN with User (NOT_FOUND)");
