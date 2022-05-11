@@ -40,6 +40,7 @@ public class ProductController {
     @Autowired
     ReviewService reviewService;
 
+
     @PostMapping("")
     public ResponseEntity<Product> createProduct(@RequestBody Product product, @RequestHeader("Authorization") String auth) {
         try {
@@ -111,6 +112,13 @@ public class ProductController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+
+//    @GetMapping("/product-category")
+//    public ResponseEntity<List<ProductType>> getAllCategories(){
+//        List<ProductType> getAllCategories = new ArrayList<>();
+//        getAllCategories = categoryRepository.findAll();
+//        return new ResponseEntity<>(categoryRepository.findAll(),HttpStatus.OK);
+//    }
 
     @GetMapping("/sort")
     public ResponseEntity<List<Product>> sortProductsByType(@RequestParam Long categoryId){

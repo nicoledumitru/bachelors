@@ -17,7 +17,7 @@ public class ProductService {
     public List<Product> getProducts(){return productRepository.findAll();}
     public Product getProductById(Long id){return productRepository.findById(id).get();}
 
-    public List<Product> getProductsByCategory(Long categoryId){return productRepository.findByTypeId(categoryId);}
+    public List<Product> getProductsByCategory(Long categoryId){return productRepository.findAllByTypeId(categoryId);}
     public void deleteProduct(Product product){
         productRepository.delete(product);
     }
