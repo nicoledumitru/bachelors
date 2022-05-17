@@ -2,6 +2,7 @@ package com.fils.backend.controllers;
 
 import com.fils.backend.domain.CartItem;
 import com.fils.backend.domain.Order;
+import com.fils.backend.domain.Product;
 import com.fils.backend.domain.User;
 import com.fils.backend.security.JwtUtil;
 import com.fils.backend.services.OrderService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +55,10 @@ public class OrderController {
             Optional<User> userByUsername = userService.getUserByUsername(username);
 
             List<CartItem> items = cartService.listCartItems(userByUsername.get());
+            List<Product> productList = new ArrayList<>();
+            for (CartItem item: items) {
+                productList.add(item.getProduct());
+            }
 
             double totalPrice=0;
             for(CartItem item : items){
@@ -62,7 +68,7 @@ public class OrderController {
             if(userByUsername.isPresent()){
                 Order o = new Order();
                 o.setUser(userByUsername.get());
-                o.setCartItemList(items);
+                o.setProductsFromCart(productList);
                 o.setTotalPrice(Double.parseDouble(df.format(totalPrice)));
                 o.setOrderTrackingNumber(orderService.generateOrderTrackingNumber());
                 orderService.saveOrder(o);

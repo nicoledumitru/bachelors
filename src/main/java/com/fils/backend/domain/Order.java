@@ -18,7 +18,7 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cart_items")
-    List<CartItem> cartItemList;
+    List<Product> productsFromCart;
 
     @ManyToOne
     @JoinColumn(name="user_id")

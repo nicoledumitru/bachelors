@@ -2,6 +2,8 @@ package com.fils.backend.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -19,8 +21,4 @@ public class ProductType {
     @Column(name = "category_name")
     private String categoryName;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "type")
-//    ,mappedBy = "type"
-//    @JoinColumn(name = "products_id")
-    private Set<Product> products;
 }

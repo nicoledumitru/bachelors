@@ -31,10 +31,6 @@ public class Product {
     @Column(name="price")
     private double price;
 
-//    @OneToOne
-//    @JoinColumn(name="picture_id", referencedColumnName = "id")
-//    private ImageModel picture;
-
     @Column(name="image_url")
     private String imageUrl;
 

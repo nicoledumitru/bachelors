@@ -1,9 +1,6 @@
 package com.fils.backend.controllers;
 
-import com.fils.backend.domain.CartItem;
-import com.fils.backend.domain.Order;
-import com.fils.backend.domain.Review;
-import com.fils.backend.domain.User;
+import com.fils.backend.domain.*;
 import com.fils.backend.security.JwtUtil;
 import com.fils.backend.services.OrderService;
 import com.fils.backend.services.ProductService;
@@ -14,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,16 +39,25 @@ public class ReviewController {
             String jwtToken = auth.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
             Optional<User> userByUsername = userService.getUserByUsername(username);
-//            List<CartItem> cartItemList = orderService.getOrderByUserAndCartItemList(userByUsername.get(),)
-//            List<Order> ordersByUser = orderService.getOrdersByUser(userByUsername.get());
-//            for(int i=0;i<=ordersByUser.size();i++){
-//                 cartItemList= ordersByUser.get(i).getCartItemList();
-//            }
-//            System.out.println(cartItemList);
+            List<Order> ordersByUser = orderService.getOrdersByUser(userByUsername.get());
+            List<Product> productList = new ArrayList<>();
+            for(Order o: ordersByUser) {
+                for (Product p: o.getProductsFromCart()) {
+                    productList.add(p);
+                }
+            }
 
             //daca acest user are o comanda anterioara care include produsul la care vrea sa faca review.
+            System.out.println(productList);
             if(userByUsername.isPresent()){
-                reviewService.saveReview(new Review(review.getRating()));
+                for(int i=0;i<=productList.size();i++){
+                    if(productList.get(i).getId()==review.getProduct().getId()){
+                        review.setUser(userByUsername.get());
+                        reviewService.saveReview(review);
+                        break;
+                    }
+                }
+
                 return ResponseEntity.ok("Review successfully added");
             }
             else{

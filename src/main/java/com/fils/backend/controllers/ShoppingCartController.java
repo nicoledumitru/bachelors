@@ -70,17 +70,21 @@ public class ShoppingCartController {
 
                 Product product = productRepository.findById(pid.pid).get();
                 CartItem cartItem = cartItemRepository.findByUserAndProduct(userByUsername.get(),product);
-                if(cartItem != null){
-                    addedQty = cartItem.getQuantity()+quantity;
-                    cartItem.setQuantity(addedQty);
-                } else{
-                    cartItem = new CartItem();
-                    cartItem.setQuantity(quantity);
-                    cartItem.setUser(userByUsername.get());
-                    cartItem.setProduct(product);
+                if(product.getStock()>0) {
+                    if (cartItem != null) {
+                        addedQty = cartItem.getQuantity() + quantity;
+                        cartItem.setQuantity(addedQty);
+                    } else {
+                        cartItem = new CartItem();
+                        cartItem.setQuantity(quantity);
+                        cartItem.setUser(userByUsername.get());
+                        cartItem.setProduct(product);
+                    }
                 }
-
+                else{ return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("The product is out of stock");}
+                product.setStock(product.getStock()-1);
                 cartItemRepository.save(cartItem);
+                productRepository.save(product);
                 return ResponseEntity.status(HttpStatus.OK).body("Item added to your cart");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: MissMatch JWT TOKEN with User (NOT_FOUND)");

@@ -28,8 +28,8 @@ public class Review {
 
     private String text;
 
-    @Column(name = "local_date_time", columnDefinition = "TIMESTAMP")
-    private LocalDateTime localDateTime;
+//    @Column(name = "local_date_time", columnDefinition = "TIMESTAMP")
+//    private LocalDateTime localDateTime;
 
     public Review(int rating){
         this.rating = rating;
