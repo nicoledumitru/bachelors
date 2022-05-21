@@ -28,8 +28,8 @@ public class ShoppingCartServices {
 //        return cartItemRepository.getById(id);
 //    }
 //
-//    public void removeCartItem(CartItem cartItem){
-//        cartItemRepository.delete(cartItem);
-//    }
+    public void removeCartItemsByUser(User user){
+        cartItemRepository.deleteAllByUser(user);
+    }
 
 }

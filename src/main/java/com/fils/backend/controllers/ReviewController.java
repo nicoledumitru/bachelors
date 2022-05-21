@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,8 @@ public class ReviewController {
     @Autowired
     JwtUtil jwtUtil;
 
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
     @PostMapping("/add")
     public ResponseEntity addReview(@RequestBody Review review, @RequestHeader("Authorization") String auth){
         try{
@@ -41,6 +44,8 @@ public class ReviewController {
             Optional<User> userByUsername = userService.getUserByUsername(username);
             List<Order> ordersByUser = orderService.getOrdersByUser(userByUsername.get());
             List<Product> productList = new ArrayList<>();
+
+            Product productById = productService.getProductById(review.getProduct().getId());
             for(Order o: ordersByUser) {
                 for (Product p: o.getProductsFromCart()) {
                     productList.add(p);
@@ -57,7 +62,9 @@ public class ReviewController {
                         break;
                     }
                 }
-
+                double totalRatingForProduct = productService.computeRating(reviewService.getByProductId(review.getProduct().getId()));
+                productById.setTotalRating(Double.parseDouble(df.format(totalRatingForProduct)));
+                productService.saveProduct(productById);
                 return ResponseEntity.ok("Review successfully added");
             }
             else{
@@ -69,8 +76,8 @@ public class ReviewController {
     }
 
     @GetMapping("")
-    public ResponseEntity getReviews(){
-        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviews());
+    public ResponseEntity getReviews(@RequestBody Test pid){
+        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getByProductId(pid.pid));
     }
 
 }

@@ -1,10 +1,6 @@
 package com.fils.backend.controllers;
 
-import com.fils.backend.domain.ImageModel;
-import com.fils.backend.domain.Product;
-import com.fils.backend.domain.ProductType;
-import com.fils.backend.domain.User;
-//import com.fils.backend.repositories.ProductTypeRepository;
+import com.fils.backend.domain.*;
 import com.fils.backend.repositories.ProductTypeRepository;
 import com.fils.backend.security.JwtUtil;
 import com.fils.backend.services.*;
@@ -12,13 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/products")
@@ -41,7 +32,8 @@ public class ProductController {
     @Autowired
     private EmailTokenService emailVerificationTokenService;
 
-
+    @Autowired
+    private WishlistService wishlistService;
 
     @PostMapping("")
     public ResponseEntity<Product> createProduct(@RequestBody Product product, @RequestHeader("Authorization") String auth) {
@@ -123,7 +115,8 @@ public class ProductController {
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long id){
         try{
             Product product = productService.getProductById(id);
-//            product.setTotalRating(productService.computeRating(reviewService.getByProductId(id)));
+            product.setTotalRating(productService.computeRating(reviewService.getByProductId(id)));
+
             return new ResponseEntity<>(product,HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -141,6 +134,7 @@ public class ProductController {
             String jwtToken = auth.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
             Optional<User> userByUsername = userService.getUserByUsername(username);
+            List<User> allUsers = userService.getAllUsers();
 
             if (userByUsername.isPresent()) {
                 Product dbProduct = productService.getProductById(product.getId());
@@ -151,7 +145,13 @@ public class ProductController {
                         dbProduct.setStock(product.getStock());
                         productService.saveProduct(dbProduct);
                         //PRIMESTE MAIL CINE IL ARE IN WISHLIST
-                        emailVerificationTokenService.sendNewsletter(userByUsername.get(), product);
+                        for(User u: allUsers){
+                            List<WishlistItem> wishlistItems = wishlistService.getWishlistItems(u);
+                            for(WishlistItem wli: wishlistItems)
+                                if(wli.getProduct().getId()==product.getId()){
+                                    emailVerificationTokenService.sendNewsletter(u, product);
+                                }
+                        }
                         return ResponseEntity.ok().body("Product updated successfully");
                     } else {
                         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("ERROR: MissMatch Product-UserId with UserId (NOT_FOUND)");
@@ -169,19 +169,27 @@ public class ProductController {
         }
     }
 
-//    @GetMapping("/recommendations")
-//    public ResponseEntity<List<Product>> getProductRecommendations(@RequestHeader("Authorization") String auth){
-//        try {
-//            String jwtToken = auth.substring(7);
-//            String username = jwtUtil.extractUsername(jwtToken);
-//            Optional<User> userByUsername = userService.getUserByUsername(username);
-//
-//            if (userByUsername.isPresent() && userByUsername.get().getRoles().contains("ROLE_ADMIN")) {
-//
-//            }
-//        }catch (Exception e){
-//
-//        }
-//    }
+    @GetMapping("/recommendations")
+    public ResponseEntity<List<Product>> getProductRecommendations(@RequestHeader("Authorization") String auth){
+        try {
+            String jwtToken = auth.substring(7);
+            String username = jwtUtil.extractUsername(jwtToken);
+            Optional<User> userByUsername = userService.getUserByUsername(username);
+
+            if (userByUsername.isPresent() && userByUsername.get().getRoles().contains("ROLE_ADMIN")) {
+                //Get all products for this seller
+                List<Product> allProdForAdmin = productService.getAllByUser(userByUsername.get());
+                //Get the three best ranked products
+                List<Product> theBestProd = productService.threeBestRanked(allProdForAdmin);
+                return ResponseEntity.status(HttpStatus.OK).body(theBestProd);
+                //Get all products from the other seller
+
+                //Get the three best ranked products from them
+            } else return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
+        }
+    }
 
 }

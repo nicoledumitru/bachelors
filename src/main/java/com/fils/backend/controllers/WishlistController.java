@@ -33,12 +33,10 @@ public class WishlistController {
 
     @GetMapping("")
     public ResponseEntity getWishlist(@RequestHeader("Authorization") String auth) {
-        //try {
         String jwtToken = auth.substring(7);
         String username = jwtUtil.extractUsername(jwtToken);
         Optional<User> userByUsername = userService.getUserByUsername(username);
         if (userByUsername.isPresent()) {
-//                userByUsername.get().setPassword(null);
             return ResponseEntity.status(HttpStatus.OK).body(wishlistService.getWishlistItems(userByUsername.get()));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You should log in first");

@@ -11,7 +11,7 @@ import java.awt.*;
 @Entity
 @Data
 @NoArgsConstructor
-public class Product {
+public class Product{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,11 +37,22 @@ public class Product {
     @Column(name="stock")
     private int stock;
 
-    private double totalRating;
+    double totalRating;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
+
+//    @Override
+//    public int compareTo(Product o) {
+//        return 0;
+//    }
+
+//    @Override
+//    public int compareTo(Product o) {
+//        int result = (int)(this.totalRating - o.getTotalRating());
+//        return result;
+//    }
 
 //  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 //  @JoinColumn(name="id")

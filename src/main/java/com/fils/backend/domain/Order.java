@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Table(name="orders")
@@ -31,4 +32,7 @@ public class Order {
 
     @Column(name="order_tracking_number")
     private String orderTrackingNumber;
+
+    @Column(name = "local_date_time", columnDefinition = "TIMESTAMP")
+    private LocalDateTime localDateTime;
 }

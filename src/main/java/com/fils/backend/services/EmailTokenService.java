@@ -91,7 +91,7 @@ public class EmailTokenService {
         String content = "Dear [[name]],<br>"
                 + "We inform you that a product that you are interested in has changed its price:<br>"
                 + "<strong>[[productName]]</strong> <br>"
-                + "<img src=\"[[productImage]]\" height=\"200px\">"
+                + "<img src=\"[[productImage]]\" height=\"200px\"> <br>"
                 + "Thank you,<br>"
                 + "I am Romanian team";
         MimeMessage message = mailSender.createMimeMessage();
