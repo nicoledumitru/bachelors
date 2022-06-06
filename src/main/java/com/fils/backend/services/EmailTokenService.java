@@ -1,6 +1,7 @@
 package com.fils.backend.services;
 
 import com.fils.backend.domain.EmailVerificationToken;
+import com.fils.backend.domain.Order;
 import com.fils.backend.domain.Product;
 import com.fils.backend.domain.User;
 import com.fils.backend.repositories.EmailVerificationTokenRepository;
@@ -110,6 +111,32 @@ public class EmailTokenService {
         mailSender.send(message);
     }
 
+    public void sendOrderConfirmation(User user, Order order) throws MessagingException, UnsupportedEncodingException {
+        String toAddress = user.getEmail();
+        String fromAddress = "skills.overflow5@gmail.com";
+        String senderName = "I am Romanian";
+        String subject = "Your order has been registered";
+        String content = "Dear [[name]],<br>"
+                + "Thank you for choosing us! Your order with tracking number<br>"
+                + "<strong>[[trackingNumber]]</strong> <br>"
+                +" has been registered successfully."
+                + "For any details regarding your order, please contact us to phone number shown on the website"
+                + "Thank you,<br>"
+                + "I am Romanian team";
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", user.getUsername());
+        content = content.replace("[[trackingNumber]]", order.getOrderTrackingNumber());
+        System.out.println("SENT EMAIL TO : "  + user.getEmail() + "ORDER ID: " + order.getId() );
+
+        helper.setText(content, true);
+        mailSender.send(message);
+    }
 //    public boolean sendResetPassword(String email) throws MessagingException, UnsupportedEncodingException {
 //        Optional<User> userByEmail = userService.getUserByEmail(email);
 //

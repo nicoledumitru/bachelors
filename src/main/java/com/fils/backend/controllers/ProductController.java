@@ -35,6 +35,9 @@ public class ProductController {
     @Autowired
     private WishlistService wishlistService;
 
+    @Autowired
+    private OrderService orderService;
+
     @PostMapping("")
     public ResponseEntity<Product> createProduct(@RequestBody Product product, @RequestHeader("Authorization") String auth) {
         try {
@@ -170,7 +173,7 @@ public class ProductController {
     }
 
     @GetMapping("/recommendations")
-    public ResponseEntity<List<Product>> getProductRecommendations(@RequestHeader("Authorization") String auth){
+    public ResponseEntity<List<Product>> getAdminRecommendations(@RequestHeader("Authorization") String auth){
         try {
             String jwtToken = auth.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
@@ -192,4 +195,51 @@ public class ProductController {
         }
     }
 
+/*    @GetMapping("/user-recommendations")
+    public ResponseEntity<List<Product>> getUserRecommendations(@RequestHeader("Authorization") String auth){
+        try {
+            String jwtToken = auth.substring(7);
+            String username = jwtUtil.extractUsername(jwtToken);
+            Optional<User> userByUsername = userService.getUserByUsername(username);
+
+            if (userByUsername.isPresent() && userByUsername.get().getRoles().contains("ROLE_GUEST")) {
+                //see other orders
+                List<Order> ordersByUser = orderService.getOrdersByUser(userByUsername.get());
+                List<Product> productListFromOrders = new ArrayList<>();
+
+                //get all products from orders
+                for(Order o: ordersByUser) {
+                    for (Product p: o.getProductsFromCart()) {
+                        productListFromOrders.add(p);
+                    }
+                }
+
+                //get categories of products from other orders
+                List<ProductType> categories = new ArrayList<>();
+                for(Product p: productListFromOrders){
+                    categories.add(p.getType());
+                }
+
+                //return product with same categories and maximum rating
+                List<Product> allProducts = productService.getProducts();
+                List<Product> recommendations = new ArrayList<>();
+
+                for(ProductType category: categories){
+                    for(Product product: allProducts){
+                        if(product.getType().equals(category) && product.getTotalRating()>4.0){
+                            recommendations.add(product);
+                        }
+                    }
+                }
+
+                for(Product recProd: recommendations){
+                    //trebuie sa fac dupa user, ce produse a cumparat el
+                    for(Product )
+                    if()
+                }
+            }
+        }catch (Exception e){
+
+        }
+    }*/
 }

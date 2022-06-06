@@ -94,6 +94,7 @@ public class LoginRegisterController {
                     );
             user.setRoles("ROLE_GUEST");
             user.setActive(false);
+            user.setSubsToNews(false);
             userService.saveUser(user);
 //            return ResponseEntity.ok("");
 

@@ -26,6 +26,8 @@ public class User {
     private String password;
     private boolean isActive;
 
+    private boolean subsToNews;
+
 //    @Column(name = "verification_code", length = 64)
 //    private String verificationCode;
 

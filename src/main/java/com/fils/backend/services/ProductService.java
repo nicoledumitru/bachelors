@@ -58,6 +58,7 @@ public class ProductService {
         bestRanked.add(productList.get(0));
         bestRanked.add(productList.get(1));
         bestRanked.add(productList.get(2));
+        bestRanked.add(productList.get(3));
         return bestRanked;
     }
 }

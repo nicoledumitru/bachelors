@@ -6,6 +6,7 @@ import com.fils.backend.domain.Product;
 import com.fils.backend.domain.User;
 import com.fils.backend.repositories.OrderRepository;
 import com.fils.backend.security.JwtUtil;
+import com.fils.backend.services.EmailTokenService;
 import com.fils.backend.services.OrderService;
 import com.fils.backend.services.ShoppingCartServices;
 import com.fils.backend.services.UserService;
@@ -39,6 +40,9 @@ public class OrderController {
 
     @Autowired
     ShoppingCartServices cartService;
+
+    @Autowired
+    EmailTokenService emailService;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -120,6 +124,7 @@ public class OrderController {
                 o.setOrderTrackingNumber(orderService.generateOrderTrackingNumber());
                 o.setLocalDateTime(LocalDateTime.now());
                 orderService.saveOrder(o);
+                emailService.sendOrderConfirmation(userByUsername.get(), o);
                 cartService.removeCartItemsByUser(userByUsername.get());
                 return ResponseEntity.status(HttpStatus.OK).body("The order is placed, thank you");
             } else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: MissMatch JWT TOKEN with User (NOT_FOUND)");

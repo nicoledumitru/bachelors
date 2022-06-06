@@ -75,9 +75,9 @@ public class ReviewController {
         }
     }
 
-    @GetMapping("")
-    public ResponseEntity getReviews(@RequestBody Test pid){
-        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getByProductId(pid.pid));
+    @GetMapping("/{pid}")
+    public ResponseEntity getReviews(@PathVariable("pid") Long pid){
+        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getByProductId(pid));
     }
 
 }
