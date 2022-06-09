@@ -28,9 +28,6 @@ public class User {
 
     private boolean subsToNews;
 
-//    @Column(name = "verification_code", length = 64)
-//    private String verificationCode;
-
     String roles;
 
     public User(String username, String email, String password) {

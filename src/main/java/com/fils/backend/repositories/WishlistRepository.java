@@ -12,6 +12,5 @@ import java.util.List;
 public interface WishlistRepository extends JpaRepository<WishlistItem, Integer> {
     List<WishlistItem> findByUser(User user);
     WishlistItem findByUserAndProduct(User user, Product product);
-//    WishlistItem getByProductAndUser(Product product, User user);
     void deleteByIdAndUser(int id, User user);
 }

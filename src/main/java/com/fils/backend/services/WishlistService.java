@@ -24,12 +24,6 @@ public class WishlistService {
 
     public void addProductToWishlist(Product product, User user) {
         WishlistItem wli= new WishlistItem();
-//                = this.getWLIByUserAndProduct(user,product);
-//        if(wli != null){
-//            new Exception("The product is already in the wishlist");
-//        } else{
-//            wli ;
-//            wli.setQuantity(quantity);
             wli.setProduct(product);
             wli.setUser(user);
 
@@ -38,9 +32,6 @@ public class WishlistService {
 
     public void deleteFromWishlist(Product product, User user){
         WishlistItem wli = wishlistRepository.findByUserAndProduct(user,product);
-//                new WishlistItem();
-//        wli.setProduct(product);
-//        wli.setUser(user);
         System.out.println(wli);
         wishlistRepository.delete(wli);
     }

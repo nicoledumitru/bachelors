@@ -25,8 +25,6 @@ public class Order {
     @JoinColumn(name="user_id")
     private User user;
 
-//    private static final DecimalFormat df = new DecimalFormat("0.00");
-
     @Column(name = "price")
     private double totalPrice;
 

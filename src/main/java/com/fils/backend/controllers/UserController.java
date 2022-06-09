@@ -14,24 +14,17 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-
     @Autowired
     private UserService userService;
-
     @Autowired
     JwtUtil jwtUtil;
-//
-//    @Autowired
-//    UserProfileRepository userProfileRepository;
 
     @GetMapping("admin/all")
-//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity getAll(@RequestHeader("Authorization") String auth) {
         String jwtToken = auth.substring(7);
         String username = jwtUtil.extractUsername(jwtToken);
         Optional<User> userByUsername = userService.getUserByUsername(username);
         if(userByUsername.isPresent() && userByUsername.get().getRoles().contains("ROLE_ADMIN")){
-//                userByUsername.get().setPassword(null);
             return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
         } else{
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("ADMIN account is required");
@@ -84,44 +77,4 @@ public class UserController {
         userService.deleteUser(user);
         return ResponseEntity.ok("DELETED: " + user);
     }
-
-    @DeleteMapping("admin/deletebyid")
-    public ResponseEntity deleteUserById(@RequestParam Long id) {
-        Optional<User> tempUser = userService.getUserById(id);
-        if (tempUser.isPresent()) {
-            userService.deleteUser(tempUser.get());
-            return ResponseEntity.ok("DELETED: " + tempUser);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: User with id: " + id + " was NOT FOUND !");
-        }
-    }
-
-    @DeleteMapping("admin/deletebyusername")
-    public ResponseEntity deleteUser(@RequestParam String username) {
-        Optional<User> tempUser = userService.getUserByUsername(username);
-        if (tempUser.isPresent()) {
-            userService.deleteUser(tempUser.get());
-            return ResponseEntity.ok("DELETED: " + tempUser);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: User with email: " + username + " was NOT FOUND !");
-        }
-    }
-
-//    @GetMapping("/current")
-//    public ResponseEntity getCurrentUser(@RequestHeader("Authorization") String auth) {
-//        try {
-//            String jwtToken = auth.substring(7);
-//            String username = jwtUtil.extractUsername(jwtToken);
-//            Optional<User> userByEmail = userService.getUserByUsername(username);
-//            if(userByEmail.isPresent()){
-//                userByEmail.get().setPassword(null);
-//                return ResponseEntity.ok(userByEmail);
-//            } else{
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: Invalid USER from JWT");
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: Couldn't parse current user jwt to get user");
-//        }
-//    }
-
 }

@@ -44,7 +44,6 @@ public class ProductService {
     }
     public List<Product> threeBestRanked(List<Product> productList){
         List<Product> bestRanked = new ArrayList<>();
-//        List<Double> allRatings = new ArrayList<>();
         for (int i = 0; i < productList.size(); i++) {
             for (int j = i + 1; j < productList.size(); j++) {
                 Product temp;
@@ -55,12 +54,6 @@ public class ProductService {
                 }
             }
         }
-//        for(Product product: productList) {
-//             allRatings.add(product.getTotalRating());
-//        }
-//        List<Product> orderedDesc =
-//        Collections.sort(allRatings, Collections.reverseOrder());
-//        Collections.sort(productList, (p1, p2) -> p1.getTotalRating() - p2.getTotalRating());
         bestRanked.add(productList.get(0));
         bestRanked.add(productList.get(1));
         bestRanked.add(productList.get(2));

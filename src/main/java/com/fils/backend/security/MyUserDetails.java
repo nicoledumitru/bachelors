@@ -17,7 +17,6 @@ public class MyUserDetails implements UserDetails {
     private boolean isActive = true;
     private List<GrantedAuthority> authorities;
 
-
     public MyUserDetails() {
     }
 

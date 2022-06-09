@@ -92,6 +92,5 @@ public class WishlistController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: Couldn't parse current user jwt to get user");
         }
-//        return ResponseEntity.ok("Product removed from wishlist");
     }
 }

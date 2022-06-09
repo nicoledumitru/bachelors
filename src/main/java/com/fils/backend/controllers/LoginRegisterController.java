@@ -40,22 +40,8 @@ public class LoginRegisterController {
     @Autowired
     private EmailTokenService emailVerificationTokenService;
 
-//    @Autowired
-//    private RefreshTokenService refreshTokenService;
-
     @Autowired
     private JwtUtil jwtTokenUtil;
-
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello World";
-    }
-
-    @GetMapping("/admin")
-    public String admin() {
-        return "HELLO ADMIN MAN";
-    }
-
 
     @PostMapping("/login")
     public ResponseEntity createAuthenticationToken(@RequestBody AuthRequest authenticationRequest) throws Exception {
@@ -77,9 +63,6 @@ public class LoginRegisterController {
         System.out.println("lista de authorities userdetails:" + userDetails.getAuthorities());
         System.out.println(roles);
 
-//        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
-//        System.out.println(refreshToken.toString());
-
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), roles));
     }
 
@@ -96,7 +79,6 @@ public class LoginRegisterController {
             user.setActive(false);
             user.setSubsToNews(false);
             userService.saveUser(user);
-//            return ResponseEntity.ok("");
 
             try {
                 String emailTokenString = emailVerificationTokenService.createEmailTokenForUserInDB(user);
@@ -121,44 +103,5 @@ public class LoginRegisterController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR : Email Verification failed ");
         }
     }
-
-//    @GetMapping("/forgot")
-//    public ResponseEntity forgotPassword(@RequestBody PasswordResetDto passwordResetDto) {
-//        try {
-//            if (emailVerificationTokenService.sendResetPassword(passwordResetDto.getEmail())) {
-//                return ResponseEntity.ok("SUCCESSFULLY sent a reset password token to your email !");
-//            } else {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: Email couldn't be found");
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: Email couldn't be found");
-//        }
-//    }
-
-
-//    @GetMapping("/resetpassword")
-//    public ResponseEntity resetPassword(@RequestParam String code) {
-//        // check code in db, for user.
-//        if (passwordResetService.verifyToken(code)) {
-//            return ResponseEntity.ok("{ \"token\":\"" + code + "\"}");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR : Email Verification Failed");
-//        }
-//    }
-
-//    @PostMapping("/savepassword")
-//    public ResponseEntity savePassword(@RequestBody PasswordResetDto passwordDto) {
-//
-//        Optional<PasswordResetToken> byToken = passwordResetService.findByToken(passwordDto.getToken());
-//        if (byToken.isPresent()) {
-//            User user = byToken.get().getUser();
-//            user.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
-//            userService.saveUser(user);
-//            // WE WANT to keep a evidence of forgotten passwords entities in DB.
-//            //passwordResetService.deletePasswordReset(byToken.get());
-//            return ResponseEntity.ok("Password Successfully Changed for : " + user.getEmail());
-//        }
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("SAVE PASSWORD endpoint got error");
-//    }
 
 }

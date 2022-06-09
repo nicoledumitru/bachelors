@@ -45,20 +45,4 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-//    public User getCurrentUser(AuthRequest auth) {
-//        try {
-//            String jwtToken = auth.substring(7);
-//            String username = jwtUtil.extractUsername(auth.getUsername());
-//            Optional<User> userByEmail = getUserByUsername(username);
-//            if(userByEmail.isPresent()){
-//                userByEmail.get().setPassword(null);
-//                return userByEmail.get();
-//            } else{
-//                return null;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 }

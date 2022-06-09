@@ -15,7 +15,6 @@ import java.util.List;
 public interface CartItemRepository extends JpaRepository<CartItem,Integer> {
     List<CartItem> findByUser(User user);
     CartItem getById(int id);
-//    void deleteByUserAndProduct(int userId, int cartItemId);
     CartItem findByUserAndProduct(User user, Product product);
     CartItem findByProduct(Product product);
     @Transactional

@@ -43,7 +43,6 @@ public class ShoppingCartController {
             String username = jwtUtil.extractUsername(jwtToken);
             Optional<User> userByUsername = userService.getUserByUsername(username);
             if(userByUsername.isPresent()){
-//                userByUsername.get().setPassword(null);
                 return ResponseEntity.status(HttpStatus.OK).body(cartServices.listCartItems(userByUsername.get()));
             } else{
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You should log in first");
@@ -53,7 +52,6 @@ public class ShoppingCartController {
     @PostMapping("/add")
     public ResponseEntity addProductToCart(@RequestBody Test pid,
                                    @RequestHeader("Authorization") String auth){
-//        , @RequestParam Integer qty
         int addedQty;
         int quantity= 1;
         try {
@@ -62,11 +60,6 @@ public class ShoppingCartController {
             Optional<User> userByUsername = userService.getUserByUsername(username);
 
             if (userByUsername.isPresent()) {
-//                int addedQty =
-//                cartServices.addProduct(pid, userByUsername.get());
-//                cartServices.addProduct(pid);
-
-//                addedQty+
 
                 Product product = productRepository.findById(pid.pid).get();
                 CartItem cartItem = cartItemRepository.findByUserAndProduct(userByUsername.get(),product);

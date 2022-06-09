@@ -65,7 +65,7 @@ public class ProductController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        //cod pt cazul in care produsul nou are acelasi nume cu un alt produs al aceluiasi furnizor
+        //what if two seller upload products with identical name?
     }
 
     @DeleteMapping("/delete/{id}")

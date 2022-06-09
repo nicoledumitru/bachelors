@@ -24,10 +24,6 @@ public class ShoppingCartServices {
 
     public CartItem saveItem(CartItem cartItem){ return cartItemRepository.save(cartItem);}
 
-//    public CartItem getItemByID(int id){
-//        return cartItemRepository.getById(id);
-//    }
-//
     public void removeCartItemsByUser(User user){
         cartItemRepository.deleteAllByUser(user);
     }

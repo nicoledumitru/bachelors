@@ -83,11 +83,6 @@ public class OrderController {
                     sum ++;
                 }
             }
-//            HashMap<Integer,Integer> data = new HashMap<>();
-//            data.put(LocalDateTime.now().getDayOfMonth(), sum);
-//            if(data.containsKey(LocalDateTime.now().getDayOfMonth())){
-//                data.replace(LocalDateTime.now().getDayOfMonth(), sum);
-//            }
             return ResponseEntity.status(HttpStatus.OK).body(sum);
         } else{
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("ADMIN account is required");

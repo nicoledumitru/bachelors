@@ -17,10 +17,8 @@ public class OrderService {
 
     public void saveOrder(Order order){orderRepository.save(order);}
     public List<Order> getOrdersByUser(User user){return orderRepository.findAllByUser(user);}
-//    public Order getOrderByUserAndCartItemList(User user, List<CartItem> list){ return orderRepository.findOrderByUserAndCartItemList(user, list);}
 
     public String generateOrderTrackingNumber() {
-
         // generate a random UUID number (UUID version-4)
         return UUID.randomUUID().toString();
     }
