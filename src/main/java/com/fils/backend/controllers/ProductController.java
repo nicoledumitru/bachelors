@@ -75,39 +75,30 @@ public class ProductController {
         return ResponseEntity.ok("DELETED: " + product);
     }
 
-    @GetMapping("/sort/{categoryId}")
-    public ResponseEntity<List<Product>> sortProductsByType(@PathVariable Long categoryId){
-//        List<Product> allProducts = productService.getProducts();
-//        List<Product> sortedProducts = new ArrayList<>();
-//        for (Product product: allProducts) {
-//            if(product.getType().equals(type)){
-//                sortedProducts.add(product);
-//            }
-//        }
-//        if(!sortedProducts.isEmpty()) {
-//            return new ResponseEntity<>(sortedProducts, HttpStatus.OK);
-//        } else return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-        List<Product> sortedProducts = productService.getProductsByCategory(categoryId);
+    @GetMapping("/sort/{categoryId}/{pageNo}")
+    public ResponseEntity<List<Product>> sortProductsByType(
+            @PathVariable Long categoryId, @PathVariable(required = false) int pageNo){
+        List<Product> sortedProducts = productService.getProductsByCategory(categoryId, pageNo);
         if(!sortedProducts.isEmpty()) {
             return new ResponseEntity<>(sortedProducts, HttpStatus.OK);
-        } else return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //Daca dau numele ca parametru imi face cautare in produse (bara de search) si le afiseaza, altfel le afiseaza pe toate
-    @GetMapping("")
-    public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) String name) {
+
+    @GetMapping("/page/{pageNo}")
+    public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) String name, @PathVariable(required = false) int pageNo) {
         try {
             List<Product> products = new ArrayList<>();
 
             if (name == null)
-                productService.getProducts().forEach(products::add);
+                productService.getProducts(pageNo).forEach(products::add);
             else
                 productService.getProductsByName(name).forEach(products::add);
 
             if (products.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-
             return new ResponseEntity<>(products, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -147,7 +138,7 @@ public class ProductController {
                         dbProduct.setPrice(product.getPrice());
                         dbProduct.setStock(product.getStock());
                         productService.saveProduct(dbProduct);
-                        //PRIMESTE MAIL CINE IL ARE IN WISHLIST
+                        //ONLY USERS WHO HAVE IT IN WISHLIST RECEIVES EMAIL
                         for(User u: allUsers){
                             List<WishlistItem> wishlistItems = wishlistService.getWishlistItems(u);
                             for(WishlistItem wli: wishlistItems)
@@ -195,19 +186,20 @@ public class ProductController {
         }
     }
 
-/*    @GetMapping("/user-recommendations")
+    @GetMapping("/user-recommendations")
     public ResponseEntity<List<Product>> getUserRecommendations(@RequestHeader("Authorization") String auth){
         try {
+            //get credentials
             String jwtToken = auth.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
             Optional<User> userByUsername = userService.getUserByUsername(username);
 
             if (userByUsername.isPresent() && userByUsername.get().getRoles().contains("ROLE_GUEST")) {
-                //see other orders
+                //see customer's other orders
                 List<Order> ordersByUser = orderService.getOrdersByUser(userByUsername.get());
                 List<Product> productListFromOrders = new ArrayList<>();
 
-                //get all products from orders
+                //get all products from his orders
                 for(Order o: ordersByUser) {
                     for (Product p: o.getProductsFromCart()) {
                         productListFromOrders.add(p);
@@ -217,9 +209,14 @@ public class ProductController {
                 //get categories of products from other orders
                 List<ProductType> categories = new ArrayList<>();
                 for(Product p: productListFromOrders){
-                    categories.add(p.getType());
+                    if(categories.contains(p.getType())){
+                        continue;
+                    }else {
+                        categories.add(p.getType());
+                    }
                 }
 
+                System.out.println(categories);
                 //return product with same categories and maximum rating
                 List<Product> allProducts = productService.getProducts();
                 List<Product> recommendations = new ArrayList<>();
@@ -231,15 +228,12 @@ public class ProductController {
                         }
                     }
                 }
-
-                for(Product recProd: recommendations){
-                    //trebuie sa fac dupa user, ce produse a cumparat el
-                    for(Product )
-                    if()
-                }
+                return ResponseEntity.status(HttpStatus.OK).body(recommendations);
             }
+            else return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }catch (Exception e){
-
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(null);
         }
-    }*/
+    }
 }

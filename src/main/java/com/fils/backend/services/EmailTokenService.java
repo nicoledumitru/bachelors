@@ -180,7 +180,6 @@ public class EmailTokenService {
                 User tempUser = token.get().getUser();
                 tempUser.setActive(true);
                 userService.saveUser(tempUser);
-//                emailTokenRepo.delete(token.get());
                 return true;
             }
         }

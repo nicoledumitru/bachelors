@@ -5,6 +5,7 @@ import com.fils.backend.domain.Review;
 import com.fils.backend.domain.User;
 import com.fils.backend.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -15,13 +16,18 @@ import java.util.List;
 @Service
 public class ProductService {
 
+    private final static int PAGE_SIZE = 12;
+
     @Autowired
     ProductRepository productRepository;
 
+    public List<Product> getProducts(int page){return productRepository.findAll(PageRequest.of(page,PAGE_SIZE)).getContent();}
     public List<Product> getProducts(){return productRepository.findAll();}
     public Product getProductById(Long id){return productRepository.findById(id).get();}
 
-    public List<Product> getProductsByCategory(Long categoryId){return productRepository.findAllByTypeId(categoryId);}
+    public List<Product> getProductsByCategory(Long categoryId, int page){
+        return productRepository.findAllByTypeId(categoryId, PageRequest.of(page, PAGE_SIZE));
+    }
     public void deleteProduct(Product product){
         productRepository.delete(product);
     }
