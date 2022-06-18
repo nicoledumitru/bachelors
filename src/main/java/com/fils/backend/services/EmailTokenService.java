@@ -119,8 +119,8 @@ public class EmailTokenService {
         String content = "Dear [[name]],<br>"
                 + "Thank you for choosing us! Your order with tracking number<br>"
                 + "<strong>[[trackingNumber]]</strong> <br>"
-                +" has been registered successfully."
-                + "For any details regarding your order, please contact us to phone number shown on the website"
+                +" has been registered successfully.<br>"
+                + "For any details regarding your order, please contact us to phone number shown on the website.<br>"
                 + "Thank you,<br>"
                 + "I am Romanian team";
         MimeMessage message = mailSender.createMimeMessage();

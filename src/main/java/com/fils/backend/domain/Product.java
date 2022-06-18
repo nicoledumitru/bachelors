@@ -42,4 +42,16 @@ public class Product{
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
+
+    public Product(Long id, String name, ProductType type, String description, double price, String imageUrl, int stock, double totalRating, User user) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.description = description;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.stock = stock;
+        this.totalRating = totalRating;
+        this.user = user;
+    }
 }

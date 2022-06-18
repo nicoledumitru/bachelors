@@ -52,32 +52,14 @@ public class ShoppingCartController {
     @PostMapping("/add")
     public ResponseEntity addProductToCart(@RequestBody Test pid,
                                    @RequestHeader("Authorization") String auth){
-        int addedQty;
-        int quantity= 1;
         try {
             String jwtToken = auth.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
             Optional<User> userByUsername = userService.getUserByUsername(username);
 
             if (userByUsername.isPresent()) {
-
-                Product product = productRepository.findById(pid.pid).get();
-                CartItem cartItem = cartItemRepository.findByUserAndProduct(userByUsername.get(),product);
-                if(product.getStock()>0) {
-                    if (cartItem != null) {
-                        addedQty = cartItem.getQuantity() + quantity;
-                        cartItem.setQuantity(addedQty);
-                    } else {
-                        cartItem = new CartItem();
-                        cartItem.setQuantity(quantity);
-                        cartItem.setUser(userByUsername.get());
-                        cartItem.setProduct(product);
-                    }
-                }
-                else{ return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("The product is out of stock");}
-                product.setStock(product.getStock()-1);
-                cartItemRepository.save(cartItem);
-                productRepository.save(product);
+                cartServices.addToCart(pid,userByUsername.get());
+//                else{ return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("The product is out of stock");}
                 return ResponseEntity.status(HttpStatus.OK).body("Item added to your cart");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ERROR: MissMatch JWT TOKEN with User (NOT_FOUND)");

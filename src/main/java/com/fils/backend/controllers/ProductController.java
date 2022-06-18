@@ -216,7 +216,6 @@ public class ProductController {
                     }
                 }
 
-                System.out.println(categories);
                 //return product with same categories and maximum rating
                 List<Product> allProducts = productService.getProducts();
                 List<Product> recommendations = new ArrayList<>();
