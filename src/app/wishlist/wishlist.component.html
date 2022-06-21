@@ -1,0 +1,12 @@
+<div *ngIf="isLoggedIn; else loggedOut">
+    <div *ngIf="wishlistItems.length === 0" class="alert alert-info">You wishlist is empty</div>
+</div>
+<ul *ngIf="wishlistItems.length > 0" class="list-group">
+    <li class="list-group-item" *ngFor="let item of wishlistItems">
+        <app-product-item [productItem]="item"></app-product-item>
+    </li>
+</ul>
+
+<ng-template #loggedOut>
+    Please login.
+</ng-template>

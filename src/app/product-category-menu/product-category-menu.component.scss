@@ -1,0 +1,18 @@
+li {
+    float: left;
+    width: 100%;
+    height: 100%;
+  }
+  
+  li a {
+    display: block;
+    // color: #a9f5f5;
+    color: #0e5a5a;
+    text-align: center;
+    padding: 28px 28px;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+}
+
+li > a:hover, .nav > li > a:focus { text-decoration: none; background-color: #f38255; color:white; }

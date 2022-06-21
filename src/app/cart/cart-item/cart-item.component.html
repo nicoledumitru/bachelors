@@ -1,0 +1,31 @@
+
+<div class="flex justify-between items-center mt-2 pt-2">
+    <div class="flex items-center">
+        <img src="{{ cartItem.productImage }}"  height="80" class="rounded-full ">
+
+        <div class="flex flex-col ml-3">
+            <span class="md:text-md font-medium">{{cartItem.productName}}</span>
+            <span class="text-xs font-light text-gray-400">#{{cartItem.id}}</span>
+
+        </div>
+    </div>
+
+    <div class="flex justify-center items-center">
+
+        <div class="pr-8 flex  justify-center items-center mr-4">
+            <!-- <span class="font-semibold">-</span> -->
+            <input type="text" class="focus:outline-none bg-gray-100 border h-6 w-8 rounded text-sm px-2 mx-2 text-center"
+                value="{{cartItem.quantity}}">
+            <span class="font-semibold">x</span>
+        </div>
+
+        <div class="pr-8 ">
+            <span class="text-xs font-medium">{{cartItem.price | currency:'EUR' }}</span>
+        </div>
+        <!-- <div>
+            <i class="fa fa-close text-xs font-medium"></i>
+        </div> -->
+
+    </div>
+
+</div>

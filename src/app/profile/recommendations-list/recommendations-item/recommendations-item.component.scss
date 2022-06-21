@@ -1,0 +1,15 @@
+.card{
+    display: flex;
+    align-items: center;
+    background-color: rgba(14, 90, 90,1);
+    // color: white;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border-color: rgb(255, 238, 218);
+}
+
+.card-text{
+    color: white;
+    // font-size: 14px;
+}

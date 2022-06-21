@@ -1,0 +1,38 @@
+<div class="h-screen bg-green-accent">
+    <div class="py-10">
+
+        <div class="max-w-full mx-auto bg-gray-100 shadow-lg rounded-lg  md:max-w-5xl">
+            <div class="md:flex">
+                <div class="w-full p-4 px-5 py-5">
+                    <div class="grid grid-cols-3">
+                        <div class="col-span-2 p-5">
+
+                            <h1 class="text-xl font-medium ">Shopping Cart</h1>
+                            <ul *ngIf="cartItems.length > 0" class="list-group" else empty>
+                                <li class="list-group-item flex justify-center items-center" *ngFor="let item of cartItems">
+                                    <app-cart-item [cartItem]="item"></app-cart-item>
+                                </li>
+                            </ul>
+
+                            <div class="flex justify-between border-t mt-3">
+                                <div>
+                                    <i class="fa fa-arrow-left text-sm pr-2"></i>
+                                    <span routerLink="/" class="text-md font-large text-lightBlue-600 cursor-pointer">Continue Shopping</span>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-large text-gray-400 mr-1">Subtotal:</span>
+                                    <span class="text-lg font-bold text-gray-800 ">{{ cartTotal | currency:'EUR'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary2" (click)="placeOrder()">Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #empty>
+    Your cart is empty
+</ng-template>

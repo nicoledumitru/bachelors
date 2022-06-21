@@ -1,0 +1,15 @@
+<div class="menu-sidebar-content js-scrollbar1">
+    <nav class="navbar-sidebar">
+        <ul class="list-unstyled navbar-list">
+
+            <li *ngFor="let tempProductCategory of productCategories; let i = index">
+
+                <a (click)="setActiveCategory(tempProductCategory.id!)">
+                    {{ tempProductCategory.categoryName }}
+                </a>
+<!-- [class.active]="i == currentCategoryId" -->
+            </li>
+        
+        </ul>
+    </nav>
+</div>

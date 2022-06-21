@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Add a product</h1>
+<div mat-dialog-content>
+    <form [formGroup]="productForm">
+        <div class="div-input">
+            <input formControlName="name" class="input" placeholder="Name of the product">
+        </div>
+        <div class="div-textarea">
+            <textarea formControlName="description" class="textarea" placeholder="Description"></textarea>
+        </div>
+        <div>
+            Price: 
+            <input class="input" type="number" formControlName="price" id="price" name="price" min="1" step="0.1"
+            placeholder="[00.00]">
+        </div>
+
+        <div>
+            <select class="custom-select mb-3" formControlName="type">
+                <option value="">Choose Type</option>
+                <option *ngFor="let category of categories" [ngValue]="category.categoryName">
+                    {{ category.categoryName }}
+                </option>
+            </select>
+        </div>
+
+        <div>
+            Stock:
+            <input class="input" type="number" formControlName="stock" id="stock" name="stock" min="1"
+            placeholder="[000]">
+        </div>
+
+        <div class="div-input">
+            Image URL: <input formControlName="imageUrl" class="input" placeholder="https://image.jpg">
+        </div>
+
+        <div mat-dialog-actions class="div-bottom-buttons">
+            <button mat-button (click)="closeModal()" class="cancel-button"> Cancel </button>
+            <button mat-button (click)="saveData()" type="button" class="save-button" cdkFocusInitial> Save </button>
+        </div>
+    </form>
+</div>

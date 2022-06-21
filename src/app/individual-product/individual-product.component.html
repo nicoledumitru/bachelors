@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-6 place-self-center">
+    <img height="300px" src="{{ product.imageUrl }}">
+  </div>
+  <div class="col-md-6 place-self-center">
+    <strong style="font-size: 24px;">{{product.price | currency:'EUR'}}</strong>
+    <br><br>
+    <em style="font-size: 18px;">{{product.description}}</em>
+    
+  </div>
+  
+</div>
+
+<p>Reviews: </p>
+<div class="flex justify-between mt-2 pt-2" *ngFor="let review of reviewsList">
+  <div class="list-group bg-gray-100 shadow-lg rounded-lg ml-3 flex justify-between p-2" style="width: 60%; height: 100px;">
+    <strong> {{ review.user!.username }} </strong>
+    <strong> {{ review.rating }}</strong>
+    <strong> {{ review.text }}  </strong>
+  </div>
+</div>
+
+<div class="mt-5 ml-3">
+  <form [formGroup]="reviewForm">
+    <div>
+      <rating formControlName="rating" style="color: #fbff00;font-size: 40px;" [(ngModel)]="rate" [max]="max" [readonly]="isReadonly">
+      </rating>
+    </div>
+    
+    <div class="div-textarea">
+      <textarea formControlName="text" class="textarea" placeholder="Write your review"></textarea>
+    </div>
+  </form>
+  <button (click)="addReview()">Publish review</button>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,60 @@
+.dbox {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+@media (max-width: 767.98px) {
+    .dbox {
+        margin-bottom: 25px !important;
+        padding: 0 20px;
+    }
+}
+
+.dbox p {
+    margin-bottom: 0;
+}
+
+.dbox p span {
+    font-weight: 500;
+    color: #000;
+}
+
+.dbox p a {
+    color: rgb(14, 90, 90);
+}
+
+.dbox .icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgb(14, 90, 90);
+    ;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.dbox .icon span {
+    font-size: 20px;
+    color: #fff;
+}
+
+.dbox .text {
+    width: 100%;
+}
+
+.btn-primary2 {
+    background-color: rgb(255, 238, 218);
+    border: 0;
+    border-radius: 15px;
+    height: 40px;
+    color: black;
+    align-content: center;
+    width: 30%;
+    font-size: 18px;
+    font-weight: 700;
+    margin-right: 24px;
+}
+
+.btn-primary2:hover{
+    background-color: #f38255;
+}

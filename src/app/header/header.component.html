@@ -1,0 +1,35 @@
+
+<!-- <div class="container"> -->
+<div class="row col-wrap">
+    <div class="col-md-12">
+        <div class="input-group mb-3" style="margin-top: 15px;">
+            <div class="col col-md-auto">
+                <img  src="/assets/logo.PNG" width="130px" alt="some logo"/>
+            </div>
+
+            <div class="col col-md-6" style="display:flex; margin-top: 15px;">
+                <input
+                type="text"
+                class="form-control"
+                placeholder="Search by name"
+                [(ngModel)]="name"
+                />
+                    
+                <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="searchTitle()"
+                >Search
+                </button>
+            </div>
+
+            <div class="col col-md-auto" style="align-self: center;">
+                <img routerLink="/cart" class="resize" src="/assets/shopping-cart.png">
+                <!-- <i class="far fa-heart" routerLink="/cart"></i> -->
+                <img routerLink="/wishlist" class="resize" src="/assets/heart.png">
+                <img (click)="choosePage()" class="resize" src="/assets/user.png">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </div> -->

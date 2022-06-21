@@ -1,0 +1,9 @@
+<div class="card mb-2 shadow-sm">
+    <a routerLink="/products/{{ recommendationItem.id }}">
+        <img width="100%" height="300px" src="{{ recommendationItem.imageUrl }}">
+    </a>
+    <div class="card-body w-full">
+        <p class="card-text" style="font-size:medium; text-decoration:underline">{{recommendationItem.name}}</p>
+        <p class="card-text">{{ recommendationItem.description | slice: 0:30 }}...</p>
+    </div>
+</div>
